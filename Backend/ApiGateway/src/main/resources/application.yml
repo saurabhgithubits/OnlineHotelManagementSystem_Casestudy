@@ -1,0 +1,64 @@
+#spring:
+#  cloud:
+#    gateway:
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
+#              - PUT
+#              - DELETE
+#            allowedHeaders:
+#              - authorization
+#              - content-type
+#              - x-requested-with
+#              - cache-control
+#              - x-xsrf-token
+#              - accept
+#              - origin
+#              - x-file-name
+#              
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: staffdetails
+          uri: http://localhost:9095
+          predicates:
+            - Path=/staff/**
+          filters:
+           - AuthenticationFilter
+        
+        - id: Reservation-Service
+          uri: http://localhost:9094
+          predicates:
+            - Path=/reserve/**
+          filters:
+           - AuthenticationFilter  
+       
+        - id: management-service
+          uri: http://localhost:9096
+          predicates:
+            - Path=/guest/**
+          filters:
+           - AuthenticationFilter  
+       
+        - id: paymentdetails
+          uri: http://localhost:9092
+          predicates:
+            - Path=/hms/v3/**
+        
+        - id: user-Service
+          uri: http://localhost:9091
+          predicates:
+            - Path=/users/**,/api/v1/auth/**
+        
+        - id: room_Service
+          uri: http://localhost:9999
+          predicates:
+            - Path=/room/**
+          filters:
+           - AuthenticationFilter    
